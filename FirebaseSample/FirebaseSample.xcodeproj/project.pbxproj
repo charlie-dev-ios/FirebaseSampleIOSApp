@@ -41,6 +41,7 @@
 		B88275EE2B542F9100C13566 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88275ED2B542F9100C13566 /* FirebaseManager.swift */; };
 		B88275F02B54316100C13566 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B88275EF2B54316100C13566 /* GoogleService-Info.plist */; };
 		B88275F22B54319900C13566 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88275F12B54319900C13566 /* AppDelegate.swift */; };
+		B88275F42B549F0C00C13566 /* RemoteConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88275F32B549F0C00C13566 /* RemoteConfigView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		B88275ED2B542F9100C13566 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		B88275EF2B54316100C13566 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B88275F12B54319900C13566 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B88275F32B549F0C00C13566 /* RemoteConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,13 +113,13 @@
 		B88275A72B542DB900C13566 /* FirebaseSample */ = {
 			isa = PBXGroup;
 			children = (
+				B88275F12B54319900C13566 /* AppDelegate.swift */,
 				B88275A82B542DB900C13566 /* FirebaseSampleApp.swift */,
 				B88275AA2B542DB900C13566 /* ContentView.swift */,
 				B88275AC2B542DBC00C13566 /* Assets.xcassets */,
 				B88275AE2B542DBC00C13566 /* Preview Content */,
-				B88275ED2B542F9100C13566 /* FirebaseManager.swift */,
-				B88275EF2B54316100C13566 /* GoogleService-Info.plist */,
-				B88275F12B54319900C13566 /* AppDelegate.swift */,
+				B88275F62B549F5700C13566 /* Firebase */,
+				B88275F52B549F3900C13566 /* Screens */,
 			);
 			path = FirebaseSample;
 			sourceTree = "<group>";
@@ -128,6 +130,23 @@
 				B88275AF2B542DBC00C13566 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B88275F52B549F3900C13566 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				B88275F32B549F0C00C13566 /* RemoteConfigView.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		B88275F62B549F5700C13566 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				B88275ED2B542F9100C13566 /* FirebaseManager.swift */,
+				B88275EF2B54316100C13566 /* GoogleService-Info.plist */,
+			);
+			path = Firebase;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,6 +252,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B88275F42B549F0C00C13566 /* RemoteConfigView.swift in Sources */,
 				B88275F22B54319900C13566 /* AppDelegate.swift in Sources */,
 				B88275EE2B542F9100C13566 /* FirebaseManager.swift in Sources */,
 				B88275AB2B542DB900C13566 /* ContentView.swift in Sources */,

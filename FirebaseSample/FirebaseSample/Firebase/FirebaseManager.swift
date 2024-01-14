@@ -28,18 +28,18 @@ final class FirebaseManager {
         remoteConfig?.configSettings = settings
     }
 
-    func fetch() {
-        remoteConfig?.fetch { (status, error) -> Void in
-          if status == .success {
-            print("aaaa status == .success")
-              print("aaaa configValue", self.remoteConfig?.configValue(forKey: "sampleString").stringValue)
-            self.remoteConfig?.activate { changed, error in
-                print("aaaa activate", changed, error)
-            }
-          } else {
-              print("aaaa status != .success")
-              print("Error: \(error?.localizedDescription ?? "No error available.")")
-          }
+    func fetchAndActivateRemoteConfig() async -> Result<Void, Error> {
+        do {
+            // In order to read the Remote Config values, not only fetch but also activate needs to be called.
+            try await remoteConfig?.fetchAndActivate()
+            return .success(())
+        } catch {
+            print("Error: \(error.localizedDescription)")
+            return .failure(error)
         }
+    }
+
+    func remoteConfigStringValue(forkey key: String) -> String? {
+        remoteConfig?.configValue(forKey: key).stringValue
     }
 }
