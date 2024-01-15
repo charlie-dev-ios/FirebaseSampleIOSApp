@@ -28,6 +28,12 @@ final class FirebaseManager {
         remoteConfig?.configSettings = settings
     }
 
+    func addOnConfigUpdateListener() {
+        remoteConfig?.addOnConfigUpdateListener(remoteConfigUpdateCompletion: { [weak self] update, error in
+            self?.remoteConfig?.activate()
+        })
+    }
+
     func fetchAndActivateRemoteConfig() async -> Result<Void, Error> {
         do {
             // In order to read the Remote Config values, not only fetch but also activate needs to be called.
@@ -39,7 +45,19 @@ final class FirebaseManager {
         }
     }
 
-    func remoteConfigStringValue(forkey key: String) -> String? {
-        remoteConfig?.configValue(forKey: key).stringValue
+    func remoteConfigStringValue(forkey key: RemoteConfigKeys) -> String? {
+        remoteConfig?.configValue(forKey: key.rawValue).stringValue
     }
+
+    func remoteConfigNumberValue(forkey key: RemoteConfigKeys) -> Int? {
+        remoteConfig?.configValue(forKey: key.rawValue).numberValue as? Int
+    }
+
+    func remoteConfigDataValue(forkey key: RemoteConfigKeys) -> Data? {
+        remoteConfig?.configValue(forKey: key.rawValue).dataValue
+    }
+}
+
+enum RemoteConfigKeys: String {
+    case sample
 }

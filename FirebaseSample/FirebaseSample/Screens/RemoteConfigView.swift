@@ -12,18 +12,21 @@ struct RemoteConfigView: View {
     @State private var remoteConfigValue: String?
 
     var body: some View {
-        Group {
+        VStack {
             if let remoteConfigResult, let remoteConfigValue {
-                VStack {
-                    Text("remoteConfigResult: \(remoteConfigResult)")
-                    Text("remoteConfigResult: \(remoteConfigValue)")
-                }
-                .padding()
+                Text("remoteConfigResult: \(remoteConfigResult)")
+                Text("remoteConfigResult: \(remoteConfigValue)")
             } else {
                 ProgressView()
                     .progressViewStyle(.circular)
             }
+            Button(action: {
+                remoteConfigValue = FirebaseManager.shared.remoteConfigStringValue(forkey: "sampleString")
+            }, label: {
+                Text("update")
+            })
         }
+        .padding()
         .task {
             switch await FirebaseManager.shared.fetchAndActivateRemoteConfig() {
                 case .success:
