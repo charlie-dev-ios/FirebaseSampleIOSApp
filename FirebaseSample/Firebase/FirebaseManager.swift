@@ -24,8 +24,11 @@ final class FirebaseManager {
     func setupRemoteConfig() {
         remoteConfig = RemoteConfig.remoteConfig()
         let settings = RemoteConfigSettings()
+        #if DEBUG
         settings.minimumFetchInterval = 0
+        #endif
         remoteConfig?.configSettings = settings
+        addOnConfigUpdateListener()
     }
 
     func addOnConfigUpdateListener() {
@@ -34,13 +37,20 @@ final class FirebaseManager {
         })
     }
 
-    func fetchAndActivateRemoteConfig() async -> Result<Void, Error> {
+    func fetchRemoteConfig() async -> Result<Void, Error> {
         do {
-            // In order to read the Remote Config values, not only fetch but also activate needs to be called.
-            try await remoteConfig?.fetchAndActivate()
+            try await remoteConfig?.fetch()
             return .success(())
         } catch {
-            print("Error: \(error.localizedDescription)")
+            return .failure(error)
+        }
+    }
+
+    func activateRemoteConfig() async -> Result<Void, Error> {
+        do {
+            try await remoteConfig?.activate()
+            return .success(())
+        } catch {
             return .failure(error)
         }
     }
@@ -49,7 +59,7 @@ final class FirebaseManager {
         remoteConfig?.configValue(forKey: key.rawValue).stringValue
     }
 
-    func remoteConfigNumberValue(forkey key: RemoteConfigKeys) -> Int? {
+    func remoteConfigIntValue(forkey key: RemoteConfigKeys) -> Int? {
         remoteConfig?.configValue(forKey: key.rawValue).numberValue as? Int
     }
 
@@ -59,5 +69,7 @@ final class FirebaseManager {
 }
 
 enum RemoteConfigKeys: String {
-    case sample
+    case sampleString
+    case sampleInt
+    case sampleData
 }
