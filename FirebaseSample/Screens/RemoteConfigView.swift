@@ -20,59 +20,90 @@ struct RemoteConfigView: View {
     @State private var cancellables = Set<AnyCancellable>()
 
     var body: some View {
-        VStack {
-            buttons
-            results
+        List {
+            Section("values") {
+                label(title: "fetchResult", value: fetchResult)
+                label(title: "activateResult", value: activateResult)
+                label(title: "sampleString", value: sampleString)
+                label(title: "sampleInt", value: sampleInt)
+                label(title: "changesDetected", value: changesDetected.description)
+            }
+            Section("sample data") {
+                Text(sampleData ?? "nil")
+            }
+            Section("actions") {
+                fetchButton
+                activateButton
+                loadSampleStringButton
+                loadSampleIntButton
+                loadSampleDataButton
+            }
         }
-        .padding()
         .onAppear {
             observeChanges()
         }
     }
 
-    private var results: some View {
-        VStack {
-            Text("fetchResult: \(fetchResult ?? "nil")")
-            Text("activateResult: \(activateResult ?? "nil")")
-            Text("sampleString: \(sampleString ?? "nil")")
-            Text("sampleInt: \(sampleInt ?? "nil")")
-            Text("sampleData: \(sampleData ?? "nil")")
-            Text("changesDetected: \(changesDetected.description)")
+    private var fetchResultLabel: some View {
+        HStack {
+            Text("fetchResult")
+            Spacer()
+            Text(fetchResult ?? "nil")
+                .foregroundStyle(.secondary)
         }
     }
 
-    private var buttons: some View {
-        VStack {
-            Button(action: {
-                task = Task {
-                    await fetch()
-                }
-            }, label: {
-                Text("fetch")
-            })
-            Button(action: {
-                task = Task {
-                    await activate()
-                }
-            }, label: {
-                Text("activate")
-            })
-            Button(action: {
-                loadSampleString()
-            }, label: {
-                Text("loadSampleString")
-            })
-            Button(action: {
-                loadSampleInt()
-            }, label: {
-                Text("loadSampleInt")
-            })
-            Button(action: {
-                loadSampleData()
-            }, label: {
-                Text("loadSampleData")
-            })
+    private func label(title: String, value: String?) -> some View {
+        HStack {
+            Text(title)
+            Spacer()
+            Text(value ?? "nil")
+                .foregroundStyle(.secondary)
         }
+    }
+
+    private var fetchButton: some View {
+        Button(action: {
+            task = Task {
+                await fetch()
+            }
+        }, label: {
+            Text("fetch")
+        })
+    }
+
+    private var activateButton: some View {
+        Button(action: {
+            task = Task {
+                await activate()
+            }
+        }, label: {
+            Text("activate")
+        })
+    }
+
+    private var loadSampleStringButton: some View {
+        Button(action: {
+            loadSampleString()
+        }, label: {
+            Text("loadSampleString")
+        })
+    }
+
+    private var loadSampleIntButton: some View {
+        Button(action: {
+            loadSampleInt()
+        }, label: {
+            Text("loadSampleInt")
+        })
+    }
+
+    private var loadSampleDataButton: some View {
+        Button(action: {
+            loadSampleData()
+        }, label: {
+            Text("loadSampleData")
+        })
     }
 
     private func fetch() async {
