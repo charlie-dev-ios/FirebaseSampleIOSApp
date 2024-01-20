@@ -5,6 +5,7 @@
 //  Created by kotaro-seki on 2024/01/15.
 //
 
+import Combine
 import Foundation
 import FirebaseCore
 import FirebaseRemoteConfig
@@ -13,6 +14,7 @@ final class FirebaseManager {
     static let shared = FirebaseManager()
 
     private var remoteConfig: RemoteConfig?
+    private var remoteConfigChangesSubject = PassthroughSubject<Void, Never>()
 
     private init() {}
 
@@ -34,6 +36,7 @@ final class FirebaseManager {
     func addOnConfigUpdateListener() {
         remoteConfig?.addOnConfigUpdateListener(remoteConfigUpdateCompletion: { [weak self] update, error in
             self?.remoteConfig?.activate()
+            self?.remoteConfigChangesSubject.send()
         })
     }
 
@@ -65,6 +68,10 @@ final class FirebaseManager {
 
     func remoteConfigDataValue(forkey key: RemoteConfigKeys) -> Data? {
         remoteConfig?.configValue(forKey: key.rawValue).dataValue
+    }
+
+    func observeRemoteConfigChanges() -> AnyPublisher<Void, Never> {
+        remoteConfigChangesSubject.eraseToAnyPublisher()
     }
 }
 

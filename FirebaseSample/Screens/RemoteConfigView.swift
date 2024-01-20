@@ -5,6 +5,8 @@
 //  Created by kotaro-seki on 2024/01/15.
 //
 
+import Foundation
+import Combine
 import SwiftUI
 
 struct RemoteConfigView: View {
@@ -13,7 +15,9 @@ struct RemoteConfigView: View {
     @State private var sampleString: String?
     @State private var sampleInt: String?
     @State private var sampleData: String?
+    @State private var changesDetected: Bool = false
     @State private var task: Task<Void, Never>?
+    @State private var cancellables = Set<AnyCancellable>()
 
     var body: some View {
         VStack {
@@ -21,6 +25,9 @@ struct RemoteConfigView: View {
             results
         }
         .padding()
+        .onAppear {
+            observeChanges()
+        }
     }
 
     private var results: some View {
@@ -30,6 +37,7 @@ struct RemoteConfigView: View {
             Text("sampleString: \(sampleString ?? "nil")")
             Text("sampleInt: \(sampleInt ?? "nil")")
             Text("sampleData: \(sampleData ?? "nil")")
+            Text("changesDetected: \(changesDetected.description)")
         }
     }
 
@@ -89,6 +97,14 @@ struct RemoteConfigView: View {
             return
         }
         sampleData = "\(sampleStruct)"
+    }
+
+    private func observeChanges() {
+        FirebaseManager.shared.observeRemoteConfigChanges()
+            .receive(on: DispatchQueue.main)
+            .sink {
+                changesDetected = true
+            }.store(in: &cancellables)
     }
 }
 
