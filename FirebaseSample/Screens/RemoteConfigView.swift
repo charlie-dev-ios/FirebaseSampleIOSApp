@@ -42,15 +42,7 @@ struct RemoteConfigView: View {
         .onAppear {
             observeChanges()
         }
-    }
-
-    private var fetchResultLabel: some View {
-        HStack {
-            Text("fetchResult")
-            Spacer()
-            Text(fetchResult ?? "nil")
-                .foregroundStyle(.secondary)
-        }
+        .navigationTitle("RemoteConfig")
     }
 
     private func label(title: String, value: String?) -> some View {
@@ -144,5 +136,7 @@ struct SampleStruct: Decodable {
 }
 
 #Preview {
-    RemoteConfigView()
+    NavigationView {
+        RemoteConfigView()
+    }
 }
